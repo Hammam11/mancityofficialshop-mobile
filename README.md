@@ -1,16 +1,38 @@
-# mancityofficialshop_mobile
+## Tugas 7:
+1. Jelaskan apa itu widget tree pada Flutter dan bagaimana hubungan parent-child (induk-anak) bekerja antar widget.
+Jawab:
+Widget tree itu adalah struktur hierarki susunan widget. Setiap elemen UI di flutter itu merupakan widget yang saling berhubungan dengan hubungan parent-child. Parent berperan sebagai pembungkus atau pengatur tata letak, sedangkan widget child adalah elemen yang ditampilkan di dalamnya
+Contoh: Scaffold adalah parent dengan Child AppBar, Body
 
-A new Flutter project.
+2. Sebutkan semua widget yang kamu gunakan dalam proyek ini dan jelaskan fungsinya.
+Jawab:
+MaterialApp: Widget utama tempat tema, navigasi, struktur dasar aplikasi
+Scaffold: Struktur dasar halaman, dia yang menyediakan AppBar, Body, dan layout
+AppBar: Menampilkan judul aplikasi
+Text: Menampilkan teks sesuai namanya
+Padding: Kasih jarak di sekitar widget agar enak dilihat
+Column: Susun widget secara vertikal
+Row: Susun widget secara horizontal
+Card: Membuat tampilan kotak semacam kartu, disini dipakai untuk nama, NPM, kelas
+SnackBar: Menampilkan pop up pesan kalau menekan tombol yang sudah di assign
+Center: Menempatkan widget di tengah
+Icon: Menampilkan icon
 
-## Getting Started
+3. Apa fungsi dari widget MaterialApp? Jelaskan mengapa widget ini sering digunakan sebagai widget root.
+Jawab:
+Dia itu berfungsi sebagai kerangka utama aplikasi Flutter, dia mengatur tema, warna, judul, juga menentukan home. MaterialApp sering dijadikan widget root karena ia menyediakan semua konfigurasi dasar yang dibutuhkan sehingga konsisten. Kita juga jadi dapat menggunakan widget seperti Scaffold, AppBar, SnackBar, dll.
 
-This project is a starting point for a Flutter application.
+4. Jelaskan perbedaan antara StatelessWidget dan StatefulWidget. Kapan kamu memilih salah satunya?
+Jawab:
+Stateless Widget itu widget yang tidak memiliki state atau keadaan yang berubah, jadi tampilan selalu sama, contohnya teks atau ikon
+Stateful Widget kebalikannya, ia dapat berubah selama aplikasi berjalan, misalnya memerlukan input dari user
+Jadi kita memilih stateless widget ketika konten yang mau kita tampilkan bersifat tetap dan stateful widget ketika ada perubahan yang harus diperbarui di layar user.
 
-A few resources to get you started if this is your first Flutter project:
+5. Apa itu BuildContext dan mengapa penting di Flutter? Bagaimana penggunaannya di metode build?
+Jawab: 
+BuildContext itu objek yang merepresentasikan posisi suatu widget dalam widget tree. Dia digunakan untuk menemukan hubungan antar widget dan mengakses informasi dari parent. Ia bisa mengambil tema, menampilkan snackbar, melakukan navigasi antar halaman.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+6. Jelaskan konsep "hot reload" di Flutter dan bagaimana bedanya dengan "hot restart".
+Jawab:
+Hot reload itu memperbarui kode aplikasi tanpa menghapus state yang lagi berjalan, ini sangat cocok kalau lagi mengedit UI, saat mengembangkan UI
+Hot restart  itu mereset aplikasi dari awal jadi singkatrnya jalani ulang aplikasi dari 0
