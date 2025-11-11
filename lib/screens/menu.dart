@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:mancityofficialshop_mobile/widgets/left_drawer.dart';
+import 'package:mancityofficialshop_mobile/widgets/product_card.dart';
+import 'package:mancityofficialshop_mobile/screens/product_form.dart';
 
 class MyHomePage extends StatelessWidget {
   MyHomePage({super.key});
@@ -8,9 +11,9 @@ class MyHomePage extends StatelessWidget {
   final String kelas = "B";
 
   final List<ItemHomepage> items = [
-    ItemHomepage("All Products", Icons.shopping_cart, Colors.blue),
+    ItemHomepage("All Products", Icons.shopping_cart_checkout, Colors.blue),
     ItemHomepage("My Products", Icons.inventory, Colors.green),
-    ItemHomepage("Create Product", Icons.add_box, Colors.red),
+    ItemHomepage("Tambah Produk", Icons.add_box, Colors.red),
   ];
 
   @override
@@ -26,6 +29,7 @@ class MyHomePage extends StatelessWidget {
         ),
         backgroundColor: Theme.of(context).colorScheme.primary,
       ),
+      drawer: const LeftDrawer(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -40,29 +44,31 @@ class MyHomePage extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 16.0),
-            const Center(
-              child: Padding(
-                padding: EdgeInsets.only(top: 16.0),
-                child: Text(
-                  'Selamat datang di ManCityOfficialShop',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18.0,
+            Center(
+              child: Column(
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.only(top: 16.0),
+                    child: Text(
+                      'Welcome to ManCityOfficialShop',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18.0,
+                      ),
+                    ),
                   ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 16.0),
-            Expanded(
-              child: GridView.count(
-                primary: false,
-                padding: const EdgeInsets.all(20),
-                crossAxisSpacing: 10,
-                mainAxisSpacing: 10,
-                crossAxisCount: 3,
-                children: items.map((ItemHomepage item) {
-                  return ItemCard(item);
-                }).toList(),
+                  GridView.count(
+                    primary: false,
+                    padding: const EdgeInsets.all(20),
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10,
+                    crossAxisCount: 3,
+                    shrinkWrap: true,
+                    children: items.map((ItemHomepage item) {
+                      return ItemCard(item);
+                    }).toList(),
+                  ),
+                ],
               ),
             ),
           ],
@@ -120,8 +126,17 @@ class ItemCard extends StatelessWidget {
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(
-              SnackBar(content: Text("Kamu telah menekan tombol ${item.name}")),
+              SnackBar(content: Text("Kamu telah menekan tombol ${item.name}!")),
             );
+
+          if (item.name == "Tambah Produk") {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const ProductFormPage(),
+              ),
+            );
+          }
         },
         child: Container(
           padding: const EdgeInsets.all(8),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mancityofficialshop_mobile/menu.dart';
+import 'package:mancityofficialshop_mobile/screens/menu.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,8 +13,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'ManCityOfficialShop',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blue)
-            .copyWith(secondary: Colors.blueAccent),
+        colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.indigo)
+            .copyWith(secondary: Colors.lightBlueAccent),
       ),
       home: MyHomePage(),
     );
