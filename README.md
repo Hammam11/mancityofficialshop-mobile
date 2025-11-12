@@ -1,15 +1,16 @@
 ## Tugas 8:
 1. Jelaskan perbedaan antara Navigator.push() dan Navigator.pushReplacement() pada Flutter. Dalam kasus apa sebaiknya masing-masing digunakan pada aplikasi Football Shop kamu?
-
+    Navigator.push() itu digunakan untuk menambahkan halaman baru di atas halaman sebelumnya dalam navigation stack. Halaman yang lama masih tersimpan di dmemori jadi bisa kembali dengan tombol back. Penggunaannya ada saat user menekan tombol all products dimana bila nanti sudah masuk terdapat tombol back untuk kembali ke halaman utama.
+    Navigator.pushReplacement digunakan untuk mengganti halaman saat ini dengan halaman baru, jadi ga disimpan di stack jadi tidak bisa back. Penggunaannya nanti bila sudah kita buat fitur logout, maka bila sudah logout tidak bisa kita back untuk kembali ke halaman utama.
 
 2. Bagaimana kamu memanfaatkan hierarchy widget seperti Scaffold, AppBar, dan Drawer untuk membangun struktur halaman yang konsisten di seluruh aplikasi?
-
+    Scaffold untuk kerangka utama halaman, menyusun komponen seperti AppBar, Drawer, dan body. Drawer untuk navigasi utama ke halaman di sebelah kiti yang memudahkan mengakses fitur-fitur. AppBar untuk menampilkan judul halaman.
 
 3. Dalam konteks desain antarmuka, apa kelebihan menggunakan layout widget seperti Padding, SingleChildScrollView, dan ListView saat menampilkan elemen-elemen form? Berikan contoh penggunaannya dari aplikasi kamu.
-
+    Padding membuat jarak antar elemen afar tidak terlalu rapat, jadi rapi dan mudah dibaca. SingleChildScrollView buat halaman dapat di scroll. ListView digunakan kalau kita punya banyak elemen dengan jumlah dinamis seperti contohnya itu daftar produk, ListView otomatis dapat di scroll jadi memudahkan.
 
 4. Bagaimana kamu menyesuaikan warna tema agar aplikasi Football Shop memiliki identitas visual yang konsisten dengan brand toko?
-
+    Saya mengeditnya agar sesuai dengan tema toko ku yaitu Manchester City dimana ia memiliki warna biru muda/sky blue seperti yang kupakai. Ini di implementasikan di maindart melalui ThemaData dan ColorScheme
 
 ## Tugas 7:
 1. Jelaskan apa itu widget tree pada Flutter dan bagaimana hubungan parent-child (induk-anak) bekerja antar widget.
