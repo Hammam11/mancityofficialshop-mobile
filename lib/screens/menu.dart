@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:mancityofficialshop_mobile/widgets/left_drawer.dart';
-import 'package:mancityofficialshop_mobile/widgets/product_card.dart';
-import 'package:mancityofficialshop_mobile/screens/product_form.dart';
+import 'package:mancityofficialshop_mobile/screens/productslist_form.dart';
+import 'package:mancityofficialshop_mobile/screens/products_entry_list.dart';
+import 'package:mancityofficialshop_mobile/screens/my_products_page.dart';
+import 'package:mancityofficialshop_mobile/screens/login.dart';
+import 'package:provider/provider.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
 
 class MyHomePage extends StatelessWidget {
   MyHomePage({super.key});
@@ -14,6 +18,7 @@ class MyHomePage extends StatelessWidget {
     ItemHomepage("All Products", Icons.shopping_cart_checkout, Colors.blue),
     ItemHomepage("My Products", Icons.inventory, Colors.green),
     ItemHomepage("Tambah Produk", Icons.add_box, Colors.red),
+    ItemHomepage("Logout", Icons.logout, Colors.yellow)
   ];
 
   @override
@@ -118,11 +123,12 @@ class ItemCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
     return Material(
       color: item.color,
       borderRadius: BorderRadius.circular(12),
       child: InkWell(
-        onTap: () {
+        onTap: () async {
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(
@@ -133,9 +139,45 @@ class ItemCard extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const ProductFormPage(),
+                builder: (context) => const ProductsFormPage(),
               ),
             );
+          } else if (item.name == "All Products") {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const ProductsEntryListPage(),
+              ),
+            );
+          } else if (item.name == "My Products") {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const MyProductsPage(),
+              ),
+            );
+          } else if (item.name == "Logout") {
+            final response = await request.logout(
+              "http://localhost:8000/auth/logout/",
+            );
+
+            if (context.mounted) {
+              String message = response["message"];
+              if (response["status"]) {
+                String uname = response["username"];
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text("$message See you again, $uname.")),
+                );
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => const LoginPage()),
+                );
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text("Logout gagal: $message")),
+                );
+              }
+            }
           }
         },
         child: Container(

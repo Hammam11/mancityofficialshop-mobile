@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mancityofficialshop_mobile/screens/menu.dart';
-import 'package:mancityofficialshop_mobile/screens/product_form.dart';
+import 'package:mancityofficialshop_mobile/screens/productslist_form.dart';
+import 'package:mancityofficialshop_mobile/screens/products_entry_list.dart';
 
 class LeftDrawer extends StatelessWidget {
   const LeftDrawer({super.key});
@@ -33,7 +34,18 @@ class LeftDrawer extends StatelessWidget {
             title: const Text('Tambah Produk'),
             onTap: () {
               Navigator.pop(context);
-              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const ProductFormPage()));
+              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const ProductsFormPage()));
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.add_reaction_rounded),
+            title: const Text('Products List'),
+            onTap: () {
+              // Route to news list page
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ProductsEntryListPage()),
+              );
             },
           ),
         ],

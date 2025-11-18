@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:mancityofficialshop_mobile/widgets/left_drawer.dart';
+import 'dart:convert';
+import 'package:provider/provider.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:mancityofficialshop_mobile/screens/menu.dart';
 
-class ProductFormPage extends StatefulWidget {
-  const ProductFormPage({super.key});
+class ProductsFormPage extends StatefulWidget {
+  const ProductsFormPage({super.key});
 
   @override
-  State<ProductFormPage> createState() => _ProductFormPageState();
+  State<ProductsFormPage> createState() => _ProductsFormPageState();
 }
 
-class _ProductFormPageState extends State<ProductFormPage> {
+class _ProductsFormPageState extends State<ProductsFormPage> {
   final _formKey = GlobalKey<FormState>();
 
   final TextEditingController _nameCtrl = TextEditingController();
@@ -44,54 +48,6 @@ class _ProductFormPageState extends State<ProductFormPage> {
     return uri.hasScheme && (uri.scheme == 'http' || uri.scheme == 'https');
   }
 
-  void _onSave() {
-    if (_formKey.currentState!.validate()) {
-      final name = _nameCtrl.text.trim();
-      final price = double.parse(_priceCtrl.text.trim());
-      final desc = _descCtrl.text.trim();
-      final thumb = _thumbnailCtrl.text.trim();
-
-      showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: const Text('Produk berhasil disimpan!'),
-            content: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Nama: $name'),
-                  Text('Harga: ${price.toStringAsFixed(2)}'),
-                  Text('Deskripsi: $desc'),
-                  Text('Kategori: $_category'),
-                  Text('Thumbnail: ${thumb.isEmpty ? "Tidak diset" : thumb}'),
-                  Text('Unggulan: ${_isFeatured ? "Ya" : "Tidak"}'),
-                ],
-              ),
-            ),
-            actions: [
-              TextButton(
-                child: const Text('OK'),
-                onPressed: () {
-                  Navigator.pop(context);
-                  _formKey.currentState!.reset();
-                  _nameCtrl.clear();
-                  _priceCtrl.clear();
-                  _descCtrl.clear();
-                  _thumbnailCtrl.clear();
-                  setState(() {
-                    _category = _categories[0];
-                    _isFeatured = false;
-                  });
-                },
-              ),
-            ],
-          );
-        },
-      );
-    }
-  }
-
   String? _validateName(String? value) {
     if (value == null || value.trim().isEmpty) return 'Nama produk tidak boleh kosong';
     final len = value.trim().length;
@@ -122,6 +78,8 @@ class _ProductFormPageState extends State<ProductFormPage> {
 
   @override
   Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Form Tambah Produk'),
@@ -155,7 +113,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
                 child: TextFormField(
                   controller: _priceCtrl,
-                  keyboardType: TextInputType.numberWithOptions(decimal: true),
+                  keyboardType: const TextInputType.numberWithOptions(decimal: true),
                   decoration: InputDecoration(
                     hintText: 'Harga (contoh: 120000)',
                     labelText: 'Harga',
@@ -224,13 +182,56 @@ class _ProductFormPageState extends State<ProductFormPage> {
                 ),
               ),
 
-              // Save button
+              // Save button with server POST
               Center(
                 child: ElevatedButton(
-                  onPressed: _onSave,
+                  onPressed: () async {
+                    if (_formKey.currentState!.validate()) {
+                      final name = _nameCtrl.text.trim();
+                      final price = double.parse(_priceCtrl.text.trim());
+                      final desc = _descCtrl.text.trim();
+                      final thumb = _thumbnailCtrl.text.trim();
+
+                      final response = await request.postJson(
+                        "http://10.0.2.2:8000/create-flutter/",
+                        jsonEncode({
+                          "name": name,
+                          "price": price,
+                          "description": desc,
+                          "thumbnail": thumb,
+                          "category": _category,
+                          "is_featured": _isFeatured,
+                        }),
+                      );
+
+                      if (context.mounted) {
+                        if (response['status'] == 'success') {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text("Produk berhasil disimpan ke server!"),
+                            ),
+                          );
+
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => MyHomePage(),
+                            ),
+                          );
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text("Terjadi kesalahan, coba lagi."),
+                            ),
+                          );
+                        }
+                      }
+                    }
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.indigo,
-                    padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 12),
+                    padding:
+                    const EdgeInsets.symmetric(horizontal: 28, vertical: 12),
                   ),
                   child: const Text('Simpan', style: TextStyle(color: Colors.white)),
                 ),
@@ -242,4 +243,3 @@ class _ProductFormPageState extends State<ProductFormPage> {
     );
   }
 }
-
