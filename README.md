@@ -1,3 +1,32 @@
+## Tugas 9:
+1. Jelaskan mengapa kita perlu membuat model Dart saat mengambil/mengirim data JSON? Apa konsekuensinya jika langsung memetakan Map<String, dynamic> tanpa model (terkait validasi tipe, null-safety, maintainability)?
+   Jawab: Model Dart memberi validasi tipe, null-safety, struktur jelas, dan maintainability.
+   Pakai Map langsung membuat rawan runtime error, tidak ada type checking, dan sulit dirawat.
+
+2. Apa fungsi package http dan CookieRequest dalam tugas ini? Jelaskan perbedaan peran http vs CookieRequest.
+   Jawab: http untuk request biasa tanpa cookie/session.
+   CookieRequest untuk request yang membutuhkan autentikasi Django karena menyimpan dan mengirim cookie otomatis.
+
+3. Jelaskan mengapa instance CookieRequest perlu untuk dibagikan ke semua komponen di aplikasi Flutter.
+   Jawab: Agar status login dan cookie session tetap konsisten. Jika tiap widget membuat instance baru, sesi login hilang dan user dianggap logout.
+
+4. Jelaskan konfigurasi konektivitas yang diperlukan agar Flutter dapat berkomunikasi dengan Django. Mengapa kita perlu menambahkan 10.0.2.2 pada ALLOWED_HOSTS, mengaktifkan CORS dan pengaturan SameSite/cookie, dan menambahkan izin akses internet di Android? Apa yang akan terjadi jika konfigurasi tersebut tidak dilakukan dengan benar?
+   Jawab: 10.0.2.2 di ALLOWED_HOSTS: agar emulator bisa akses server. CORS: agar Django mengizinkan request dari aplikasi Flutter. Pengaturan SameSite/cookie: agar session login tersimpan. Izin Internet Android: agar Flutter dapat mengirim request. Salah konfigurasi → request diblok, cookie tidak terkirim, atau Flutter gagal terhubung ke Django.
+
+5. Jelaskan mekanisme pengiriman data mulai dari input hingga dapat ditampilkan pada Flutter.
+   Jawab:
+   Flutter ambil input → kirim ke Django → Django validasi & simpan → kirim JSON balik → Flutter parse ke model → tampilkan di UI.
+
+6. Jelaskan mekanisme autentikasi dari login, register, hingga logout. Mulai dari input data akun pada Flutter ke Django hingga selesainya proses autentikasi oleh Django dan tampilnya menu pada Flutter.
+   Jawab:
+   Register: Flutter kirim data → Django buat user.
+   Login: Flutter kirim kredensial via CookieRequest → Django buat session & kirim cookie → Flutter simpan cookie → user dianggap login.
+   Akses data: CookieRequest kirim cookie ke Django.
+   Logout: Flutter panggil endpoint → Django hapus session → Flutter reset status login.
+
+7. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step! (bukan hanya sekadar mengikuti tutorial):
+   Jawab: Sebagian besar mengikuti tutorial saja dengan beberapa penyesuaian, yang berbeda dari tutorial saat di akhir membuka myproductpage karena itu tidak ada di tutorial. Jadi intinya kita membuat dart baru lalu tombol di menu dihubungkan kesana. Di all product itu menampilkan product list sedangkan di myproduct hanya menampilkan product-product yang kita buat sendiri. 
+
 ## Tugas 8:
 1. Jelaskan perbedaan antara Navigator.push() dan Navigator.pushReplacement() pada Flutter. Dalam kasus apa sebaiknya masing-masing digunakan pada aplikasi Football Shop kamu?
     Navigator.push() itu digunakan untuk menambahkan halaman baru di atas halaman sebelumnya dalam navigation stack. Halaman yang lama masih tersimpan di dmemori jadi bisa kembali dengan tombol back. Penggunaannya ada saat user menekan tombol all products dimana bila nanti sudah masuk terdapat tombol back untuk kembali ke halaman utama.
